@@ -4,6 +4,7 @@
  */
 package proyecto1;
 import javax.swing.JOptionPane;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -44,6 +45,7 @@ private void IntroNodo(){
         Entrada = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         Salida = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -60,6 +62,7 @@ private void IntroNodo(){
         getContentPane().add(InsertarArco, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, 230, 30));
 
         InsertarNodo1.setText("Insertar Nodo");
+        InsertarNodo1.setActionCommand("Insertar Archivo");
         InsertarNodo1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InsertarNodo1ActionPerformed(evt);
@@ -85,6 +88,9 @@ private void IntroNodo(){
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 470, 150));
 
+        jLabel1.setText("Bienvenido");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -100,6 +106,15 @@ Salida.setText(Grafo.VerGrafo());
     }//GEN-LAST:event_InsertarArcoActionPerformed
 
     private void InsertarNodo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertarNodo1ActionPerformed
+JFileChooser Selector = new JFileChooser();
+int Resultado = Selector.showOpenDialog(this);
+if (Resultado == JFileChooser.APPROVE_OPTION){
+    java.io.File ArchivoSelec = Selector.getSelectedFile();
+    Salida.setText("Ruta del archivo seleccionado: " + ArchivoSelec.getAbsolutePath());
+    javax.swing.JOptionPane.showMessageDialog(this, "Seleccionaste: " + ArchivoSelec.getAbsolutePath());
+}else{
+    Salida.setText("El usuario no insertó archivos.");
+}
 // TODO add your handling code here:
 IntroNodo();
     }//GEN-LAST:event_InsertarNodo1ActionPerformed
@@ -155,6 +170,7 @@ if (evt.getKeyCode()== java.awt.event.KeyEvent.VK_ENTER){
     private javax.swing.JButton InsertarArco;
     private javax.swing.JButton InsertarNodo1;
     private javax.swing.JTextArea Salida;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

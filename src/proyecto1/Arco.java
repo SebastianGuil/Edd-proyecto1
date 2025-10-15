@@ -12,8 +12,8 @@ public class Arco {
     String destino;
     Arco siguiente;
 
-    public Arco(String d) {
-        this.destino = d;
+    public Arco(String dato) {
+        this.destino = dato;
         this.siguiente = null;
     }
 }
