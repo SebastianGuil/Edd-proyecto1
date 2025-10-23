@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package proyecto1;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.JFileChooser;
 
@@ -41,7 +45,7 @@ private void IntroNodo(){
 
         jPanel1 = new javax.swing.JPanel();
         InsertarArco = new javax.swing.JButton();
-        InsertarNodo1 = new javax.swing.JButton();
+        insertarArchivo = new javax.swing.JButton();
         Entrada = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         Salida = new javax.swing.JTextArea();
@@ -61,14 +65,14 @@ private void IntroNodo(){
         });
         getContentPane().add(InsertarArco, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, 230, 30));
 
-        InsertarNodo1.setText("Insertar Nodo");
-        InsertarNodo1.setActionCommand("Insertar Archivo");
-        InsertarNodo1.addActionListener(new java.awt.event.ActionListener() {
+        insertarArchivo.setText("Insertar Archivo");
+        insertarArchivo.setActionCommand("Insertar Archivo");
+        insertarArchivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                InsertarNodo1ActionPerformed(evt);
+                insertarArchivoActionPerformed(evt);
             }
         });
-        getContentPane().add(InsertarNodo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 220, 30));
+        getContentPane().add(insertarArchivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 220, 30));
 
         Entrada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,19 +109,21 @@ if (Grafo.ExisteVertice(origen) && Grafo.ExisteVertice(destino)){
 Salida.setText(Grafo.VerGrafo());
     }//GEN-LAST:event_InsertarArcoActionPerformed
 
-    private void InsertarNodo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertarNodo1ActionPerformed
-JFileChooser Selector = new JFileChooser();
-int Resultado = Selector.showOpenDialog(this);
-if (Resultado == JFileChooser.APPROVE_OPTION){
-    java.io.File ArchivoSelec = Selector.getSelectedFile();
-    Salida.setText("Ruta del archivo seleccionado: " + ArchivoSelec.getAbsolutePath());
-    javax.swing.JOptionPane.showMessageDialog(this, "Seleccionaste: " + ArchivoSelec.getAbsolutePath());
-}else{
-    Salida.setText("El usuario no insertó archivos.");
-}
-// TODO add your handling code here:
-IntroNodo();
-    }//GEN-LAST:event_InsertarNodo1ActionPerformed
+    private void insertarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertarArchivoActionPerformed
+        JFileChooser Selector = new JFileChooser();
+        int Resultado = Selector.showOpenDialog(this);
+        if (Resultado == JFileChooser.APPROVE_OPTION){
+            File archivoSeleccionado = Selector.getSelectedFile();
+            Lector lector = new Lector(archivoSeleccionado);
+            lector.leer();
+            String usuariosString = lector.getUsuariosString();
+            String relacionesString = lector.getRelacionesString();
+            System.out.println("Los usuarios son: " + usuariosString);
+            System.out.println("Las relaciones son: " + relacionesString);
+        }else{
+            Salida.setText("El usuario no insertó archivos.");
+        }
+    }//GEN-LAST:event_insertarArchivoActionPerformed
 
     private void EntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EntradaActionPerformed
         // TODO add your handling code here:
@@ -168,10 +174,11 @@ if (evt.getKeyCode()== java.awt.event.KeyEvent.VK_ENTER){
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Entrada;
     private javax.swing.JButton InsertarArco;
-    private javax.swing.JButton InsertarNodo1;
     private javax.swing.JTextArea Salida;
+    private javax.swing.JButton insertarArchivo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+    private javax.swing.JFileChooser fileChooser;
 }
