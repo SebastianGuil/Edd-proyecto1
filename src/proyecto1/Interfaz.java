@@ -3,12 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package proyecto1;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import javax.swing.JOptionPane;
+import java.util.Scanner;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,6 +15,8 @@ import javax.swing.JFileChooser;
 
 public class Interfaz extends javax.swing.JFrame {
     Grafo Grafo = new Grafo();
+    String usuariosString;
+    String relacionesString;
     /**
      * Creates new form NewJFrame
      */
@@ -25,15 +25,7 @@ public class Interfaz extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.pack();
     }
-private void IntroNodo(){
-    String pnew = Entrada.getText();
-    if (pnew != null && !pnew.trim().isEmpty()){
-        Grafo.NuevoNodo(pnew);
-        Salida.setText(Grafo.VerGrafo());
-        Entrada.setText("");
-        Entrada.requestFocusInWindow();
-    }
-}
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,12 +36,14 @@ private void IntroNodo(){
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        InsertarArco = new javax.swing.JButton();
+        CrearGrafo = new javax.swing.JButton();
         insertarArchivo = new javax.swing.JButton();
         Entrada = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         Salida = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
+        insertarArco = new javax.swing.JButton();
+        insertarNodo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -57,22 +51,21 @@ private void IntroNodo(){
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        InsertarArco.setText("Insertar Arco");
-        InsertarArco.addActionListener(new java.awt.event.ActionListener() {
+        CrearGrafo.setText("Crear grafo");
+        CrearGrafo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                InsertarArcoActionPerformed(evt);
+                CrearGrafoActionPerformed(evt);
             }
         });
-        getContentPane().add(InsertarArco, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, 230, 30));
+        getContentPane().add(CrearGrafo, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 160, 140, 30));
 
         insertarArchivo.setText("Insertar Archivo");
-        insertarArchivo.setActionCommand("Insertar Archivo");
         insertarArchivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 insertarArchivoActionPerformed(evt);
             }
         });
-        getContentPane().add(insertarArchivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 220, 30));
+        getContentPane().add(insertarArchivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 150, 30));
 
         Entrada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,7 +77,7 @@ private void IntroNodo(){
                 EntradaKeyPressed(evt);
             }
         });
-        getContentPane().add(Entrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 470, 110));
+        getContentPane().add(Entrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 470, 110));
 
         Salida.setColumns(20);
         Salida.setRows(5);
@@ -93,35 +86,58 @@ private void IntroNodo(){
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 470, 150));
 
         jLabel1.setText("Bienvenido");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(189, 0, 100, 40));
+
+        insertarArco.setText("Agregar relaciones");
+        insertarArco.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insertarArcoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(insertarArco, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 160, 140, 30));
+
+        insertarNodo.setText("Agregar usuarios");
+        getContentPane().add(insertarNodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 160, 140, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void InsertarArcoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertarArcoActionPerformed
-String origen = "";
-String destino = "";
-origen = JOptionPane.showInputDialog("Origen:");
-destino = JOptionPane.showInputDialog("Destino:");
-if (Grafo.ExisteVertice(origen) && Grafo.ExisteVertice(destino)){
- Grafo.NuevaArista(origen, destino);
-}    
-Salida.setText(Grafo.VerGrafo());
-    }//GEN-LAST:event_InsertarArcoActionPerformed
+    private void CrearGrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearGrafoActionPerformed
+        String usuario;
+        Scanner scannerUsuarios = new Scanner(this.usuariosString);
+        while (scannerUsuarios.hasNextLine()){
+            usuario = scannerUsuarios.nextLine();
+            Grafo.NuevoNodo(usuario);
+        }
+        String[] relacion;
+        String origen;
+        String destino;
+        Scanner scannerRelaciones = new Scanner(this.relacionesString);
+        while (scannerRelaciones.hasNextLine()){
+            relacion = scannerRelaciones.nextLine().split(",");
+            origen = relacion[0].trim();
+            destino = relacion[1].trim();
+            Grafo.NuevaArista(origen, destino);
+        }
+        Salida.setText(Grafo.VerGrafo());
+        
+    }//GEN-LAST:event_CrearGrafoActionPerformed
 
     private void insertarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertarArchivoActionPerformed
         JFileChooser Selector = new JFileChooser();
         int Resultado = Selector.showOpenDialog(this);
         if (Resultado == JFileChooser.APPROVE_OPTION){
             File archivoSeleccionado = Selector.getSelectedFile();
+            String nombreArchivo = Selector.getName(archivoSeleccionado);
+            JOptionPane.showMessageDialog(this, "Archivo: '" + nombreArchivo + "' seleccionado");
             Lector lector = new Lector(archivoSeleccionado);
             lector.leer();
-            String usuariosString = lector.getUsuariosString();
-            String relacionesString = lector.getRelacionesString();
-            System.out.println("Los usuarios son: " + usuariosString);
-            System.out.println("Las relaciones son: " + relacionesString);
+            this.usuariosString = lector.getUsuariosString();
+            this.relacionesString = lector.getRelacionesString();
+            System.out.println("Los usuarios son: " + this.usuariosString);
+            System.out.println("Las relaciones son: " + this.relacionesString);
         }else{
-            Salida.setText("El usuario no insertó archivos.");
+            JOptionPane.showMessageDialog(this, "El usuario no insertó archivos.");
         }
     }//GEN-LAST:event_insertarArchivoActionPerformed
 
@@ -130,11 +146,25 @@ Salida.setText(Grafo.VerGrafo());
     }//GEN-LAST:event_EntradaActionPerformed
 
     private void EntradaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EntradaKeyPressed
-if (evt.getKeyCode()== java.awt.event.KeyEvent.VK_ENTER){
-    IntroNodo();
-}
+        if (evt.getKeyCode()== java.awt.event.KeyEvent.VK_ENTER){
+            
+        }
     }//GEN-LAST:event_EntradaKeyPressed
 
+    private void insertarArcoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertarArcoActionPerformed
+        // TODO add your handling code here:
+        String origen = "";
+        String destino = "";
+        origen = JOptionPane.showInputDialog("Inserte el usuario de origen (Ejemplo: @pepe):");
+        destino = JOptionPane.showInputDialog("Inserte el usuario de destino (Ejemplo: @marcos):");
+        if (Grafo.ExisteVertice(origen) && Grafo.ExisteVertice(destino)){
+            Grafo.NuevaArista(origen, destino);
+        }else{
+            JOptionPane.showMessageDialog(this, "No se ha encontrado el usuario de origen y/o destino, intente nuevamente");
+        }    
+        Salida.setText(Grafo.VerGrafo());
+    }//GEN-LAST:event_insertarArcoActionPerformed
+        
     /**
      * @param args the command line arguments
      */
@@ -172,10 +202,12 @@ if (evt.getKeyCode()== java.awt.event.KeyEvent.VK_ENTER){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CrearGrafo;
     private javax.swing.JTextField Entrada;
-    private javax.swing.JButton InsertarArco;
     private javax.swing.JTextArea Salida;
     private javax.swing.JButton insertarArchivo;
+    private javax.swing.JButton insertarArco;
+    private javax.swing.JButton insertarNodo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

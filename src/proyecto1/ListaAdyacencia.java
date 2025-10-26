@@ -27,19 +27,17 @@ public void NuevaAdyacencia (String destino)  {
     }
 }
  
-public boolean adyacente (String dato){
-    Arco actual;
-    boolean encontrado;
-    encontrado =  false;
-    actual = Pfirst;
-    while (actual != null && dato.equals(actual.destino)){
+public boolean adyacente(String dato) {
+    Arco actual = Pfirst;
+    while (actual != null) {
+        if (dato.equals(actual.destino)) {
+            return true; 
+        }
         actual = actual.siguiente;
     }
-    if (actual != null){
-        encontrado = true ;
-    }
-    return encontrado;
+    return false;
 }
+
 public void insertar (Arco nodo, Object destino){
     if (ListaVacia()){
         Pfirst = nodo;
@@ -67,9 +65,9 @@ public String VerGrafo(){
     String cadena = "";
     Arco temporal = Pfirst;
     while (temporal != null){
-        cadena = cadena + temporal.destino + ";";
+        cadena = cadena + temporal.destino + ", ";
         temporal = temporal.siguiente;
     }
-    return cadena;
+    return cadena + ";";
 }
 }

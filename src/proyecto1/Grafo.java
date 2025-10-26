@@ -33,13 +33,11 @@ public class Grafo {
         return Existe;
     }
     public void NuevaArista (Object origen, String destino){
-        if (ExisteVertice(origen) && ExisteVertice(destino)){
             NodoGrafo posicion = Pfirst;
             while (!posicion.dato.equals(origen)){
                 posicion = posicion.Pnext;
             }
             posicion.lista.NuevaAdyacencia(destino);
-        }
     }
     public void NuevoNodo (String dato){
          if (!ExisteVertice(dato)){
@@ -61,9 +59,11 @@ public class Grafo {
         String cadena = "";
         NodoGrafo temporal = Pfirst;
         while (temporal != null){
-            cadena = cadena + temporal.dato + "->" + temporal.lista.VerGrafo()+ "\n";
+            cadena = cadena + temporal.dato + " --> " + temporal.lista.VerGrafo()+ "\n";
             temporal = temporal.Pnext;
         }
         return cadena;
     }
+    
+    
 }
