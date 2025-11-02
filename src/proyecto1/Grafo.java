@@ -64,6 +64,15 @@ public class Grafo {
         }
         return cadena;
     }
+
+    public NodoGrafo getPfirst() {
+        return Pfirst;
+    }
+
+    public NodoGrafo getPlast() {
+        return Plast;
+    }
+    
     
     
 }

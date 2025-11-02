@@ -16,58 +16,65 @@ public class ListaAdyacencia {
         this.Pfirst = null;
         this.Plast = null;
     }
-   public boolean ListaVacia (){
+    
+    public boolean ListaVacia (){
                   return Pfirst == null;
-
-   }
-public void NuevaAdyacencia (String destino)  {
-    if (! adyacente(destino)){
-        Arco Pnew = new Arco (destino);
-        insertar (Pnew, destino);       
     }
-}
- 
-public boolean adyacente(String dato) {
-    Arco actual = Pfirst;
-    while (actual != null) {
-        if (dato.equals(actual.destino)) {
-            return true; 
+    
+    public void NuevaAdyacencia (String destino)  {
+        if (! adyacente(destino)){
+            Arco Pnew = new Arco (destino);
+            insertar (Pnew, destino);       
         }
-        actual = actual.siguiente;
     }
-    return false;
-}
 
-public void insertar (Arco nodo, Object destino){
-    if (ListaVacia()){
-        Pfirst = nodo;
-        Plast = nodo;
-    }else {
-        if (destino.equals(Pfirst.destino)){
-            nodo.siguiente= Pfirst;
+    public boolean adyacente(String dato) {
+        Arco actual = Pfirst;
+        while (actual != null) {
+            if (dato.equals(actual.destino)) {
+                return true; 
+            }
+            actual = actual.siguiente;
+        }
+        return false;
+    }
+
+    public void insertar (Arco nodo, Object destino){
+        if (ListaVacia()){
             Pfirst = nodo;
-        }else{
-            if (destino.equals(Plast.destino)){
-                Plast.siguiente = nodo;
-                Plast = nodo;
-            }else { 
-                Arco posicion = Pfirst;
-                while (destino.equals(posicion.destino)){
-                    posicion = posicion.siguiente;  
+            Plast = nodo;
+        }else {
+            if (destino.equals(Pfirst.destino)){
+                nodo.siguiente= Pfirst;
+                Pfirst = nodo;
+            }else{
+                if (destino.equals(Plast.destino)){
+                    Plast.siguiente = nodo;
+                    Plast = nodo;
+                }else { 
+                    Arco posicion = Pfirst;
+                    while (destino.equals(posicion.destino)){
+                        posicion = posicion.siguiente;  
+                    }
+                    nodo.siguiente = posicion.siguiente;
+                    posicion.siguiente = nodo;
                 }
-                nodo.siguiente = posicion.siguiente;
-                posicion.siguiente = nodo;
             }
         }
     }
-}
-public String VerGrafo(){
-    String cadena = "";
-    Arco temporal = Pfirst;
-    while (temporal != null){
-        cadena = cadena + temporal.destino + ", ";
-        temporal = temporal.siguiente;
+    
+    public String VerGrafo(){
+        String cadena = "";
+        Arco temporal = Pfirst;
+        while (temporal != null){
+            if (temporal.siguiente == null){
+                cadena = cadena + temporal.destino + ";";
+                temporal = temporal.siguiente;
+            }else{
+                cadena = cadena + temporal.destino + ", ";
+                temporal = temporal.siguiente;
+            }
+        }
+        return cadena;
     }
-    return cadena + ";";
-}
 }
