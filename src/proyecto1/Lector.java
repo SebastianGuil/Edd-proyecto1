@@ -8,6 +8,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.FileWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,7 +33,7 @@ public class Lector {
             String linea;
             StringBuilder usuarios = new StringBuilder();
             StringBuilder relaciones = new StringBuilder();
-            while (!(linea = reader.readLine()).contains("relaciones")) {
+            while (!(linea = reader.readLine()).toLowerCase().trim().contains("relaciones")) {
                 if (!linea.contains("usuarios")){
                     usuarios.append(linea).append("\n");
                 }
@@ -48,7 +51,18 @@ public class Lector {
             //return e.print;
         }
     }
-
+    
+    /*public void actualizarRepositorio(){
+        try {
+            FileWriter writer = new FileWriter(this.archivo);
+            writer.flush();
+            writer.write("usuarios\n" + this.usuariosString + "relaciones\n" + this.relacionesString);
+            writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Lector.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+*/
     public String getUsuariosString() {
         return usuariosString;
     }
@@ -56,6 +70,15 @@ public class Lector {
     public String getRelacionesString() {
         return relacionesString;
     }
+
+    public void setUsuariosString(String usuariosString) {
+        this.usuariosString = usuariosString;
+    }
+
+    public void setRelacionesString(String relacionesString) {
+        this.relacionesString = relacionesString;
+    }
+    
     
     
 }

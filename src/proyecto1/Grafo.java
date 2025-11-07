@@ -93,43 +93,65 @@ public class Grafo {
             }
         return null;
         }
+
+    public String Guardardo(){
+        StringBuilder Usuarios = new StringBuilder();
+        StringBuilder Relaciones = new StringBuilder ();
+        NodoGrafo temp = this.Pfirst;
+
+        while (temp!=null){
+            Usuarios.append(temp.dato).append("\n");
+            Arco Arcotemp = temp.lista.Pfirst;
+           while (Arcotemp!=null){
+               Relaciones.append(temp.dato).append(",").append(Arcotemp.destino).append("\n");
+               Arcotemp = Arcotemp.Pnext;
+           }
+           temp = temp.Pnext;
+        }
+        return "usuarios:\n" + Usuarios.toString() + "\n" + "relaciones: \n" + Relaciones.toString();
+    }
     
-public void EliminarNodo (String dato){
+    public void EliminarArco(String origen, String destino) {
+        if (GrafoVacio() || !ExisteVertice(origen) || !ExisteVertice(destino)) {
+            return;
+        }
+        NodoGrafo nodoOrigen = EncontrarNodo(origen);
+        if (nodoOrigen != null) {
+            nodoOrigen.lista.EliminarArco(destino);
+        }
+    }
+    
+    public void EliminarNodo (String dato){
+        if (GrafoVacio() || !ExisteVertice(dato)) {
+            return;
+        }
         NodoGrafo temp = Pfirst;
-        while ( temp != null){
-            if (temp.dato.equals(dato)){
-                NodoGrafo Aux = Pfirst;
-                if(temp == Pfirst){
-                    Pfirst = Pfirst.Pnext;
-                }else{
-                while(Aux.Pnext != temp){
-                    Aux = Aux.Pnext;
-                }
-                Aux.Pnext = temp.Pnext;  
-                }
-             
+        while (temp != null) {
+            if (!temp.dato.equals(dato)) {
+                temp.lista.EliminarArco(dato);
             }
             temp = temp.Pnext;
         }
+        temp = Pfirst;
+        NodoGrafo Aux = null;
+        while (temp != null && !temp.dato.equals(dato)) {
+            Aux = temp;
+            temp = temp.Pnext;
+        }
+        if (temp == null){ 
+            return;
+        }
+        if (Aux == null) {
+            Pfirst = Pfirst.Pnext;
+            if (Pfirst == null) {
+                Plast = null;
+            }
+        } else {
+            Aux.Pnext = temp.Pnext;
+            if (Aux.Pnext == null) {
+                Plast = Aux;
+            }
+        }
     }
 
-public String Guardardo(){
-    StringBuilder Usuarios = new StringBuilder();
-    StringBuilder Relaciones = new StringBuilder ();
-    NodoGrafo temp = this.Pfirst;
-    
-    while (temp!=null){
-        Usuarios.append(temp.dato).append("\n");
-        Arco Arcotemp = temp.lista.Pfirst;
-       while (Arcotemp!=null){
-           Relaciones.append(temp.dato).append(",").append(Arcotemp.destino).append("\n");
-           Arcotemp = Arcotemp.Pnext;
-       }
-       temp = temp.Pnext;
-    }
-    return "Usuarios:\n" + Usuarios.toString() + "\n" + "Relaciones: \n" + Relaciones.toString();
-}
-
-}
-    
-    
+}  

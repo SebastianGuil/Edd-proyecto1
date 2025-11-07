@@ -19,6 +19,7 @@ import org.graphstream.ui.view.Viewer;
 public class Grafico {
     private Grafo grafo;
     private Graph graph;
+    private String hojaEstilos;
     
     public Grafico(Grafo g){
         this.grafo = g;
@@ -27,13 +28,12 @@ public class Grafico {
         this.graph.setAutoCreate(true);
         this.graph.setStrict(false);
         this.graph.setAttribute("ui.quality");
-        this.graph.setAttribute("ui.antialias");
-        String hojaEstilos = 
+        hojaEstilos = 
             "graph {" +
             "fill-color: white;" +
             "}" +
             "node {" +
-            "size: 20px;" +
+            "size: 15px;" +
             "fill-color: #3498db;" +
             "stroke-mode: plain;" +
             "stroke-color: #2980b9;" +
@@ -41,11 +41,8 @@ public class Grafico {
             "text-alignment: under;" +
             "text-background-mode: plain;" +
             "text-background-color: white;" +
-            "text-size: 16;" +
+            "text-size: 12;" +
             "text-color: black;" +
-            "}" +
-            "node:clicked {" +
-            "fill-color: #e74c3c;" +
             "}" +
             "edge {" +
             "shape: line;" +
@@ -53,11 +50,12 @@ public class Grafico {
             "arrow-size: 8px, 5px;" +
             "z-index: 0;" +
             "}";
-        this.graph.setAttribute("ui.stylesheet", hojaEstilos);
     }
     
     public void generarGrafoGs(){
         this.graph.clear();
+        this.graph.setAttribute("ui.quality");
+        this.graph.setAttribute("ui.stylesheet", hojaEstilos);
         NodoGrafo primero = grafo.getPfirst();
         int id = 0;
         while (primero != null){

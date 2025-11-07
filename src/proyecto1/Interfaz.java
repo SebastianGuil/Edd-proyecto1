@@ -7,8 +7,6 @@ import java.io.File;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import org.graphstream.graph.*;
-
 
 /**
  *
@@ -20,6 +18,8 @@ public class Interfaz extends javax.swing.JFrame {
     Grafico grafico;
     String usuariosString;
     String relacionesString;
+    Lector lector;
+    
     public Interfaz() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -49,6 +49,7 @@ public class Interfaz extends javax.swing.JFrame {
         SalidaKosa = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        eliminarRelacion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -76,11 +77,11 @@ public class Interfaz extends javax.swing.JFrame {
         Salida.setRows(5);
         jScrollPane1.setViewportView(Salida);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 440, 470, 150));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 470, 150));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Bienvenido");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 40));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 850, 40));
 
         insertarArco.setText("Agregar relaciones");
         insertarArco.addActionListener(new java.awt.event.ActionListener() {
@@ -107,13 +108,13 @@ public class Interfaz extends javax.swing.JFrame {
                 EliminarUsuarioActionPerformed(evt);
             }
         });
-        getContentPane().add(EliminarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 290, -1, -1));
+        getContentPane().add(EliminarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 250, -1, 30));
 
         SalidaKosa.setColumns(20);
         SalidaKosa.setRows(5);
         jScrollPane2.setViewportView(SalidaKosa);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 440, -1, -1));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 440, 330, 120));
 
         jButton1.setText("Encontrar fuertemente conectados");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -121,7 +122,7 @@ public class Interfaz extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 540, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 570, -1, -1));
 
         jButton2.setText("Guardar Grafo Actualizado");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -129,7 +130,15 @@ public class Interfaz extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 400, 170, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 400, 190, 30));
+
+        eliminarRelacion.setText("Eliminar Relacion");
+        eliminarRelacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarRelacionActionPerformed(evt);
+            }
+        });
+        getContentPane().add(eliminarRelacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 300, -1, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -139,18 +148,23 @@ public class Interfaz extends javax.swing.JFrame {
         Scanner scannerUsuarios = new Scanner(this.usuariosString);
         while (scannerUsuarios.hasNextLine()){
             usuario = scannerUsuarios.nextLine();
-            Grafo.NuevoNodo(usuario);
+            if (!usuario.trim().isEmpty()){
+                Grafo.NuevoNodo(usuario);
+            }
         }
         String[] relacion;
         String origen;
         String destino;
         Scanner scannerRelaciones = new Scanner(this.relacionesString);
         while (scannerRelaciones.hasNextLine()){
-            relacion = scannerRelaciones.nextLine().split(",");
-            if (relacion.length >= 2){
-            origen = relacion[0].trim();
-            destino = relacion[1].trim();
-            Grafo.NuevaArista(origen, destino);
+            String lineaRelacion = scannerRelaciones.nextLine();
+            if (!lineaRelacion.trim().isEmpty()){
+                relacion = lineaRelacion.split(",");
+                if (relacion.length >= 2){
+                    origen = relacion[0].trim();
+                    destino = relacion[1].trim();
+                    Grafo.NuevaArista(origen, destino);
+                }
             }
         }
         Salida.setText(Grafo.VerGrafo());
@@ -166,10 +180,10 @@ public class Interfaz extends javax.swing.JFrame {
             File archivoSeleccionado = Selector.getSelectedFile();
             String nombreArchivo = Selector.getName(archivoSeleccionado);
             JOptionPane.showMessageDialog(this, "Archivo: '" + nombreArchivo + "' seleccionado");
-            Lector lector = new Lector(archivoSeleccionado);
-            lector.leer();
-            this.usuariosString = lector.getUsuariosString();
-            this.relacionesString = lector.getRelacionesString();
+            lector = new Lector(archivoSeleccionado);
+            this.lector.leer();
+            this.usuariosString = this.lector.getUsuariosString();
+            this.relacionesString = this.lector.getRelacionesString();
             System.out.println("Los usuarios son: " + this.usuariosString);
             System.out.println("Las relaciones son: " + this.relacionesString);
         }else{
@@ -205,7 +219,7 @@ public class Interfaz extends javax.swing.JFrame {
                 this.grafico.mostrarGrafoEnPanel(graphJPanel1);
             }
         }
-            Salida.setText(Grafo.VerGrafo());
+            Salida.setText(Grafo.VerGrafo());                       
     }//GEN-LAST:event_insertarNodoActionPerformed
 
 
@@ -223,16 +237,16 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_EliminarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-Kosaraju kosaraju = new Kosaraju(Grafo);
-String resultado = kosaraju.EncontrarRelacionados();
-SalidaKosa.setText(resultado);
-jButton1.setEnabled(true);
-       
+        Kosaraju kosaraju = new Kosaraju(Grafo);
+        String resultado = kosaraju.EncontrarRelacionados();
+        SalidaKosa.setText(resultado);
+        jButton1.setEnabled(true);
+
       // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void EliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarUsuarioActionPerformed
-String usuario = JOptionPane.showInputDialog("Inserte el usuario que quiere eliminar (Ejemplo: @lucas):");
+        String usuario = JOptionPane.showInputDialog("Inserte el usuario que quiere eliminar (Ejemplo: @lucas):");
         if (usuario != null && !usuario.trim().isEmpty()){
             Grafo.EliminarNodo(usuario);
             if (this.grafico != null) {
@@ -246,26 +260,44 @@ String usuario = JOptionPane.showInputDialog("Inserte el usuario que quiere elim
     }//GEN-LAST:event_EliminarUsuarioActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-String ContenidoActualizado = this.Grafo.Guardardo();
-JFileChooser Escogedor = new JFileChooser();
-Escogedor.setDialogTitle("Guardar Grafo Como...");
-int Seleccion = Escogedor.showSaveDialog(this);
-if (Seleccion == JFileChooser.APPROVE_OPTION){
-java.io.File ArchivoaGuardar = Escogedor.getSelectedFile();
-String RutaArchivo = ArchivoaGuardar.getAbsolutePath();
-if (!RutaArchivo.endsWith(".txt")){
-    ArchivoaGuardar = new java.io.File(RutaArchivo + ".txt");
-}
-try (java.io.FileWriter fw = new java.io.FileWriter(ArchivoaGuardar);
-java.io.PrintWriter pw = new java.io.PrintWriter(fw)){
-    pw.print(ContenidoActualizado);
-    JOptionPane.showMessageDialog(this, "Grafo guardado exitosamente" + ArchivoaGuardar.getName());
-}catch (java.io.IOException e){
-    JOptionPane.showMessageDialog(this, "Error al guardar el archivo" + e.getMessage(),"Error de guardado", JOptionPane.ERROR_MESSAGE);
-}
-}
+        String ContenidoActualizado = this.Grafo.Guardardo();
+        JFileChooser Escogedor = new JFileChooser();
+        Escogedor.setDialogTitle("Guardar Grafo Como...");
+        int Seleccion = Escogedor.showSaveDialog(this);
+        if (Seleccion == JFileChooser.APPROVE_OPTION){
+            java.io.File ArchivoaGuardar = Escogedor.getSelectedFile();
+            String RutaArchivo = ArchivoaGuardar.getAbsolutePath();
+            if (!RutaArchivo.endsWith(".txt")){
+                ArchivoaGuardar = new java.io.File(RutaArchivo + ".txt");
+            }
+            try (java.io.FileWriter fw = new java.io.FileWriter(ArchivoaGuardar);
+                java.io.PrintWriter pw = new java.io.PrintWriter(fw)){
+                pw.print(ContenidoActualizado);
+                JOptionPane.showMessageDialog(this, "Grafo guardado exitosamente" + ArchivoaGuardar.getName());
+            }catch (java.io.IOException e){
+                JOptionPane.showMessageDialog(this, "Error al guardar el archivo" + e.getMessage(),"Error de guardado", JOptionPane.ERROR_MESSAGE);
+            }
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void eliminarRelacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarRelacionActionPerformed
+        // TODO add your handling code here:
+        String origen = JOptionPane.showInputDialog("Inserte el usuario de origen (Ejemplo: @pepe):");
+        String destino = JOptionPane.showInputDialog("Inserte el usuario de destino (Ejemplo: @marcos):");
+
+        if (origen != null && destino != null && !origen.trim().isEmpty() && !destino.trim().isEmpty()) {
+            Grafo.EliminarArco(origen, destino);
+            
+            Salida.setText(Grafo.VerGrafo());
+            if (this.grafico != null) {
+                this.grafico.generarGrafoGs();
+                this.grafico.mostrarGrafoEnPanel(graphJPanel1);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un origen y un destino válidos.");
+        }
+    }//GEN-LAST:event_eliminarRelacionActionPerformed
     
 
     /**
@@ -309,6 +341,7 @@ java.io.PrintWriter pw = new java.io.PrintWriter(fw)){
     private javax.swing.JButton EliminarUsuario;
     private javax.swing.JTextArea Salida;
     private javax.swing.JTextArea SalidaKosa;
+    private javax.swing.JButton eliminarRelacion;
     private javax.swing.JPanel graphJPanel1;
     private javax.swing.JButton insertarArchivo;
     private javax.swing.JButton insertarArco;

@@ -93,6 +93,28 @@ public class ListaAdyacencia {
     }
         return cadena;
 }
+    public void EliminarArco(String destino) {
+        if (ListaVacia()) {
+            return;
+        }
+        Arco temp = Pfirst;
+        Arco anterior = null;
+        while (temp != null && !temp.destino.equals(destino)) {
+            anterior = temp;
+            temp = temp.Pnext;
+        }
+        if (temp == null) {
+            return;
+        }
+        if (anterior == null) {
+            Pfirst = temp.Pnext;
+        }else{
+            anterior.Pnext = temp.Pnext;
+        }
+        if (temp == Plast) {
+            Plast = anterior;
+        }
+    }
     
     
 }
