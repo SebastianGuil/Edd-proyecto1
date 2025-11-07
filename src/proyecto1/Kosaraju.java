@@ -35,10 +35,10 @@ public class Kosaraju {
         this.Transpuesto.MarcarVisitado(false);
         Resultado = "Elementos fuertemente conectados: \n ";
         while (!Relacionados.EstaVacia()){
-            NodoGrafo NodoPila = Relacionados.Pfirst;
+            NodoGrafo NodoPila = Relacionados.getPfirstData();
             NodoGrafo NodoTrans = this.Transpuesto.EncontrarNodo(NodoPila.dato);
             if(NodoTrans != null && !NodoTrans.Visitado){
-                Resultado = Resultado + "SCC: [" + FuertementeConec(NodoTrans) + "] \n";
+                Resultado = Resultado + "Fuertemente conectados: [" + FuertementeConec(NodoTrans) + "] \n";
                 
             }
             Relacionados.SacarNodo();
@@ -64,13 +64,17 @@ public class Kosaraju {
         NodoGrafo temp = Original.getPfirst();
         while (temp != null){
             this.Transpuesto.NuevoNodo(temp.dato);
-            Arco Arcotemp = temp.lista.Pfirst;
-            while(Arcotemp != null){
-                this.Transpuesto.NuevaArista(Arcotemp.destino, temp.dato);
-                Arcotemp = Arcotemp.Pnext;
-            }
             temp = temp.Pnext;
-        }
+}
+temp = Original.getPfirst();
+while(temp !=  null){
+    Arco Arcotemp = temp.lista.Pfirst;
+    while (Arcotemp != null){
+        this.Transpuesto.NuevaArista(Arcotemp.destino, temp.dato);
+        Arcotemp = Arcotemp.Pnext;
+    }
+    temp = temp.Pnext;
+    }
     }
     
     public String FuertementeConec (NodoGrafo NodoTrans){

@@ -40,6 +40,19 @@ public class ListaAdyacencia {
     }
 
     public void insertar (Arco nodo, Object destino){
+        if (adyacente(nodo.destino)){
+             return;
+         }
+         if (ListaVacia()){
+             Pfirst = nodo;
+             Plast = nodo;
+         } else {
+             Plast.Pnext = nodo;
+             Plast = nodo; 
+         }
+     }
+/*
+     
         if (ListaVacia()){
             Pfirst = nodo;
             Plast = nodo;
@@ -50,18 +63,20 @@ public class ListaAdyacencia {
             }else{
                 if (destino.equals(Plast.destino)){
                     Plast.Pnext = nodo;
-                    Plast = nodo;
-                }else { 
+                    Plast = Plast.Pnext;
+            }else{
                     Arco posicion = Pfirst;
                     while (destino.equals(posicion.destino)){
                         posicion = posicion.Pnext;  
                     }
                     nodo.Pnext = posicion.Pnext;
                     posicion.Pnext = nodo;
-                }
-            }
-        }
-    }
+                    */
+                
+            
+        
+    
+    
     
     public String VerGrafo(){
         String cadena = "";
@@ -73,8 +88,11 @@ public class ListaAdyacencia {
             }else{
                 cadena = cadena + temporal.destino + ", ";
                 temporal = temporal.Pnext;
-            }
         }
-        return cadena;
+        
     }
+        return cadena;
+}
+    
+    
 }

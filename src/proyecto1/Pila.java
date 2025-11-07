@@ -8,8 +8,19 @@ package proyecto1;
  *
  * @author Sebastian Guillen
  */
+
+class NodoPila {
+    NodoGrafo dato;
+    NodoPila Pnext;
+
+    public NodoPila(NodoGrafo dato) {
+        this.dato = dato;
+        this.Pnext = null;
+    }
+    
+}
 public class Pila {
-    NodoGrafo Pfirst;
+    NodoPila Pfirst;
 
     public Pila() {
         this.Pfirst = null;
@@ -20,17 +31,24 @@ public class Pila {
     }
     
     public void InsertarNodo(NodoGrafo dato){
-    
+        NodoPila Pnew = new NodoPila(dato);
         if (EstaVacia()){
-        Pfirst = dato;
+        Pfirst = Pnew;
     }else{
-            dato.Pnext = Pfirst;
-            Pfirst = dato;
+            Pnew.Pnext = Pfirst;
+            Pfirst = Pnew;
         }
 }
     public void SacarNodo (){
         if (!EstaVacia()){
             Pfirst = Pfirst.Pnext;
         }
+    }
+    
+    public NodoGrafo getPfirstData(){
+        if (EstaVacia()){
+            return null;
+        }
+        return Pfirst.dato;
     }
 }

@@ -15,7 +15,6 @@ public class NodoGrafo {
     NodoGrafo Pnext;
     boolean Visitado;
     
-    
     public NodoGrafo(String x) {
         this.dato = x;
         this.lista = new ListaAdyacencia();

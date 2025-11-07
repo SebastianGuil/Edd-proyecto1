@@ -34,10 +34,12 @@ public class Grafo {
     }
     public void NuevaArista (Object origen, String destino){
             NodoGrafo posicion = Pfirst;
-            while (!posicion.dato.equals(origen)){
+            while (posicion != null && !posicion.dato.equals(origen)){
                 posicion = posicion.Pnext;
             }
+            if(posicion!=null){
             posicion.lista.NuevaAdyacencia(destino);
+            }
     }
     public void NuevoNodo (String dato){
          if (!ExisteVertice(dato)){
@@ -111,7 +113,23 @@ public void EliminarNodo (String dato){
         }
     }
 
+public String Guardardo(){
+    StringBuilder Usuarios = new StringBuilder();
+    StringBuilder Relaciones = new StringBuilder ();
+    NodoGrafo temp = this.Pfirst;
+    
+    while (temp!=null){
+        Usuarios.append(temp.dato).append("\n");
+        Arco Arcotemp = temp.lista.Pfirst;
+       while (Arcotemp!=null){
+           Relaciones.append(temp.dato).append(",").append(Arcotemp.destino).append("\n");
+           Arcotemp = Arcotemp.Pnext;
+       }
+       temp = temp.Pnext;
+    }
+    return "Usuarios:\n" + Usuarios.toString() + "\n" + "Relaciones: \n" + Relaciones.toString();
+}
+
 }
     
     
-

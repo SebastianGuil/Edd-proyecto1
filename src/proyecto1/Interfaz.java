@@ -20,11 +20,6 @@ public class Interfaz extends javax.swing.JFrame {
     Grafico grafico;
     String usuariosString;
     String relacionesString;
-    
-    
-    /**
-     * Creates new form NewJFrame
-     */
     public Interfaz() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -49,10 +44,11 @@ public class Interfaz extends javax.swing.JFrame {
         insertarArco = new javax.swing.JButton();
         insertarNodo = new javax.swing.JButton();
         graphJPanel1 = new javax.swing.JPanel();
-        Eliminar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        EliminarUsuario = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        SalidaKosajaru = new javax.swing.JTextArea();
+        SalidaKosa = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -80,7 +76,7 @@ public class Interfaz extends javax.swing.JFrame {
         Salida.setRows(5);
         jScrollPane1.setViewportView(Salida);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-30, 450, 470, 150));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 440, 470, 150));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Bienvenido");
@@ -105,27 +101,35 @@ public class Interfaz extends javax.swing.JFrame {
         graphJPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         getContentPane().add(graphJPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 650, 330));
 
-        Eliminar.setText("Eliminar usuarios");
-        Eliminar.addActionListener(new java.awt.event.ActionListener() {
+        EliminarUsuario.setText("Eliminar Usuario");
+        EliminarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EliminarActionPerformed(evt);
+                EliminarUsuarioActionPerformed(evt);
             }
         });
-        getContentPane().add(Eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 400, -1, -1));
+        getContentPane().add(EliminarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 290, -1, -1));
 
-        jButton1.setText("Buscar Fuertemente Conectados");
+        SalidaKosa.setColumns(20);
+        SalidaKosa.setRows(5);
+        jScrollPane2.setViewportView(SalidaKosa);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 440, -1, -1));
+
+        jButton1.setText("Encontrar fuertemente conectados");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 440, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 540, -1, -1));
 
-        SalidaKosajaru.setColumns(20);
-        SalidaKosajaru.setRows(5);
-        jScrollPane2.setViewportView(SalidaKosajaru);
-
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 470, 260, 170));
+        jButton2.setText("Guardar Grafo Actualizado");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 400, 170, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -147,7 +151,8 @@ public class Interfaz extends javax.swing.JFrame {
             origen = relacion[0].trim();
             destino = relacion[1].trim();
             Grafo.NuevaArista(origen, destino);
-        }}
+            }
+        }
         Salida.setText(Grafo.VerGrafo());
         this.grafico = new Grafico(this.Grafo);
         this.grafico.generarGrafoGs();
@@ -203,6 +208,7 @@ public class Interfaz extends javax.swing.JFrame {
             Salida.setText(Grafo.VerGrafo());
     }//GEN-LAST:event_insertarNodoActionPerformed
 
+
     private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
         // TODO add your handling code here:
         String usuario = JOptionPane.showInputDialog("Inserte el usuario que quiere eliminar (Ejemplo: @lucas):");
@@ -217,10 +223,51 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_EliminarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-Kosaraju Kosaraju = new Kosaraju(Grafo);
-SalidaKosajaru.setText(Kosaraju.EncontrarRelacionados());        // TODO add your handling code here:
+Kosaraju kosaraju = new Kosaraju(Grafo);
+String resultado = kosaraju.EncontrarRelacionados();
+SalidaKosa.setText(resultado);
+jButton1.setEnabled(true);
+       
+      // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void EliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarUsuarioActionPerformed
+String usuario = JOptionPane.showInputDialog("Inserte el usuario que quiere eliminar (Ejemplo: @lucas):");
+        if (usuario != null && !usuario.trim().isEmpty()){
+            Grafo.EliminarNodo(usuario);
+            if (this.grafico != null) {
+                this.grafico.generarGrafoGs();
+                this.grafico.mostrarGrafoEnPanel(graphJPanel1);
+            }
+        }
+            Salida.setText(Grafo.VerGrafo());
+
+// TODO add your handling code here:
+    }//GEN-LAST:event_EliminarUsuarioActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+String ContenidoActualizado = this.Grafo.Guardardo();
+JFileChooser Escogedor = new JFileChooser();
+Escogedor.setDialogTitle("Guardar Grafo Como...");
+int Seleccion = Escogedor.showSaveDialog(this);
+if (Seleccion == JFileChooser.APPROVE_OPTION){
+java.io.File ArchivoaGuardar = Escogedor.getSelectedFile();
+String RutaArchivo = ArchivoaGuardar.getAbsolutePath();
+if (!RutaArchivo.endsWith(".txt")){
+    ArchivoaGuardar = new java.io.File(RutaArchivo + ".txt");
+}
+try (java.io.FileWriter fw = new java.io.FileWriter(ArchivoaGuardar);
+java.io.PrintWriter pw = new java.io.PrintWriter(fw)){
+    pw.print(ContenidoActualizado);
+    JOptionPane.showMessageDialog(this, "Grafo guardado exitosamente" + ArchivoaGuardar.getName());
+}catch (java.io.IOException e){
+    JOptionPane.showMessageDialog(this, "Error al guardar el archivo" + e.getMessage(),"Error de guardado", JOptionPane.ERROR_MESSAGE);
+}
+}
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
     
+
     /**
      * @param args the command line arguments
      */
@@ -259,14 +306,15 @@ SalidaKosajaru.setText(Kosaraju.EncontrarRelacionados());        // TODO add you
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CrearGrafo;
-    private javax.swing.JButton Eliminar;
+    private javax.swing.JButton EliminarUsuario;
     private javax.swing.JTextArea Salida;
-    private javax.swing.JTextArea SalidaKosajaru;
+    private javax.swing.JTextArea SalidaKosa;
     private javax.swing.JPanel graphJPanel1;
     private javax.swing.JButton insertarArchivo;
     private javax.swing.JButton insertarArco;
     private javax.swing.JButton insertarNodo;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
