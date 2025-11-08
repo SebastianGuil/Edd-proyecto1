@@ -1,0 +1,1 @@
+Tuvimos un problema con un "git push --force" que hizo que se borraran todos los commits anteriores. Sin embargo en esta rama aparece todo el historial como estaba antes de borrarse con ese git push force. 
